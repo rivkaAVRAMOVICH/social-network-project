@@ -9,7 +9,7 @@ async function addUser(user) {
   return result.insertId;
 }
 
-async function getUserById(id) {
+async function getUserByName(name) {
   const [rows] = await db.query(
     `SELECT * FROM myappdb.users WHERE name = ?`,
     [name]
