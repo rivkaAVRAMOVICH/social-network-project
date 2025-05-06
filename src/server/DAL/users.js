@@ -58,15 +58,16 @@ module.exports = {
   updateUser,
   deleteUser,
 };
-var user1={
-    id:222,
-name:'111',
-email:'111',
-address:'111',
-phon:'111'
-}
-getUserById(123);
-getUserPasswordById(215639212);
-getAllUsers();
-updateUser(123, user1);
-deleteUser(222)
+// var user1={
+//     id:222,
+// name:'111',
+// email:'111',
+// address:'111',
+// phon:'111'
+// }
+// addUser(user1);
+// getUserById(123);
+// getUserPasswordById(215639212);
+// getAllUsers();
+// updateUser(123, user1);
+// deleteUser(222)
