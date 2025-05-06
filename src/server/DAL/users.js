@@ -1,22 +1,24 @@
 // const db = require('.../db'); // חיבור למסד הנתונים
 const db  = require('../../db/connection');
+
 async function addUser(user) {
-  const {id, name, email, address, phon } = user;
+  const {name, email, address, phon } = user;
   const [result] = await db.query(
-    `INSERT INTO myappdb.users (id, name, email, address, phon) VALUES (?,?, ?, ?, ?)`,
-    [id,name, email, address, phon]
+    `INSERT INTO myappdb.users (name, email, address, phon) VALUES (?, ?, ?, ?)`,
+    [name, email, address, phon]
   );
   return result.insertId;
 }
 
-async function getUserById(id) {
+async function getUserByName(name) {
   const [rows] = await db.query(
-    `SELECT * FROM myappdb.users WHERE id = ?`,
-    [id]
+    `SELECT * FROM myappdb.users WHERE name = ?`,
+    [name]
   );
   console.log(JSON.stringify(rows[0]));
   return rows[0];
 }
+
 async function getUserPasswordById(id) {
     const [rows] = await db.query(
       `SELECT * FROM myappdb.passwords WHERE user_id = ?`,
@@ -24,7 +26,9 @@ async function getUserPasswordById(id) {
     );
     console.log(JSON.stringify(rows[0]));
     return rows[0];
-  }
+ 
+}
+
 async function getAllUsers() {
   const [rows] = await db.query(
     `SELECT * FROM myappdb.users`
@@ -52,7 +56,7 @@ async function deleteUser(id) {
 
 module.exports = {
   addUser,
-  getUserById,
+  getUserByName,
   getUserPasswordById,
   getAllUsers,
   updateUser,

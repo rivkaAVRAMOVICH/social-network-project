@@ -85,7 +85,7 @@ async function initDB() {
     await connection.query(`USE ${process.env.DB_NAME}`);
     await connection.query(`CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(100),
+      name VARCHAR(100) PRIMARY KEY,
       email VARCHAR(100) UNIQUE,
       address VARCHAR(100),
       phon VARCHAR(20)

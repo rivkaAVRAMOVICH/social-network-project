@@ -1,4 +1,5 @@
 const db  = require('../../db/connection');
+
 async function addPost(post) {
   const { user_id, title , content} = post;
   const [result] = await db.query(
@@ -43,7 +44,7 @@ async function deletePost(id) {
 async function deleteAllPost(user_id) {
     const [result] = await db.query(
       `DELETE FROM myappdb.posts WHERE user_id = ?`,
-      [id]
+      [user_id]
     );
     return result.affectedRows > 0;
   }
@@ -56,9 +57,9 @@ module.exports = {
   deletePost,
   deleteAllPost
 };
-var post={
-    user_id: 123,
-    title:"rcev555",
-    content:"cdfhjjvghmghhngfxdcgvhbj555"
-}
-addPost(post);
+// var post={
+//     user_id: 123,
+//     title:"rcev555",
+//     content:"cdfhjjvghmghhngfxdcgvhbj555"
+// }
+// addPost(post);
