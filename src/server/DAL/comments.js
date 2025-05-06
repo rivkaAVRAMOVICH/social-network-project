@@ -1,4 +1,5 @@
 const db = require('../../db/connection');
+
 async function addComment(comment) {
     const { user_id, post_id, content } = comment;
     const [result] = await db.query(
@@ -7,7 +8,6 @@ async function addComment(comment) {
     );
     return result.insertId;
 }
-
 async function getCommentById(id) {
     const [rows] = await db.query(
         `SELECT * FROM myappdb.comments WHERE id = ?`,
@@ -23,7 +23,6 @@ async function getAllcomments(post_id) {
     console.log(JSON.stringify(rows));
     return rows;
 }
-
 async function updateComment(id, comment) {
     const { content } = comment;
     const [result] = await db.query(
@@ -32,7 +31,6 @@ async function updateComment(id, comment) {
     );
     return result.affectedRows > 0;
 }
-
 async function deleteComment(id) {
     const [result] = await db.query(
         `DELETE FROM myappdb.comments WHERE id = ?`,
@@ -48,9 +46,3 @@ module.exports = {
     updateComment,
     deleteComment
 };
-comment = {
-    user_id: 215639212,
-    post_id: 2,
-    content: "12"
-}
-updateComment(1, comment)

@@ -1,14 +1,12 @@
 const db  = require('../../db/connection');
-
 async function addPost(post) {
-  const { user_id, title , content} = post;
+  const { user_id, title, content } = post;
   const [result] = await db.query(
     `INSERT INTO myappdb.posts (user_id, title , content) VALUES (?,?, ?)`,
-    [user_id, title , content]
+    [user_id, title, content]
   );
   return result.insertId;
 }
-
 async function getContentPostById(id) {
   const [rows] = await db.query(
     `SELECT * FROM myappdb.posts WHERE id = ?`,
@@ -24,16 +22,14 @@ async function getAllPosts() {
   console.log(JSON.stringify(rows));
   return rows;
 }
-
 async function updatePost(id, post) {
-    const {title , content} = post;
+  const { title, content } = post;
   const [result] = await db.query(
     `UPDATE myappdb.posts SET title  = ?, content = ? WHERE id = ?`,
-    [title , content, id]
+    [title, content, id]
   );
   return result.affectedRows > 0;
 }
-
 async function deletePost(id) {
   const [result] = await db.query(
     `DELETE FROM myappdb.posts WHERE id = ?`,
@@ -44,7 +40,7 @@ async function deletePost(id) {
 async function deleteAllPost(user_id) {
     const [result] = await db.query(
       `DELETE FROM myappdb.posts WHERE user_id = ?`,
-      [user_id]
+      [id]
     );
     return result.affectedRows > 0;
   }
@@ -57,9 +53,9 @@ module.exports = {
   deletePost,
   deleteAllPost
 };
-// var post={
-//     user_id: 123,
-//     title:"rcev555",
-//     content:"cdfhjjvghmghhngfxdcgvhbj555"
-// }
-// addPost(post);
+var post={
+    user_id: 123,
+    title:"rcev555",
+    content:"cdfhjjvghmghhngfxdcgvhbj555"
+}
+addPost(post);
