@@ -26,6 +26,7 @@ async function getUserPasswordById(id) {
     console.log(JSON.stringify(rows[0]));
     return rows[0];
   }
+
 async function getAllUsers() {
   const [rows] = await db.query(
     `SELECT * FROM myappdb.users`
@@ -33,6 +34,7 @@ async function getAllUsers() {
   console.log(JSON.stringify(rows));
   return rows;
 }
+
 async function updateUser(id, user) {
   const { name, email, address, phon } = user;
   const [result] = await db.query(
@@ -41,6 +43,7 @@ async function updateUser(id, user) {
   );
   return result.affectedRows > 0;
 }
+
 async function deleteUser(id) {
   const [result] = await db.query(
     `DELETE FROM myappdb.users WHERE id = ?`,

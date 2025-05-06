@@ -1,13 +1,13 @@
 const todosDal = require('../DAL/todos');
 
-async function getAllTodos(user_id) {
+async function getAll(user_id) {
     try {
         return todosDal.deleteAllTodos(user_id);
     } catch (error) {
         throw new Error("get all todos faild:" + error);
     }
 }
-async function getTodoById(id) {
+async function getById(id) {
     try {
         return todosDal.getTodoById(id);
     } catch (error) {
@@ -16,7 +16,7 @@ async function getTodoById(id) {
     }
 
 }
-async function addTodo(todo) {
+async function add(todo) {
     try {
         return todosDal.addTodo(todo)
     } catch (error) {
@@ -24,21 +24,21 @@ async function addTodo(todo) {
 
     }
 }
-async function updateTodo(id, todo) {
+async function update(id, todo) {
     try {
         return todosDal.updateTodo(id, todo)
     } catch (error) {
         throw new Error("update todo faild:" + error);
     }
 }
-async function deleteTodo(id) {
+async function deleteById(id) {
     try {
         return todosDal.deleteTodo(id)
     } catch (error) {
         throw new Error("deleta todo faild:" + error);
     }
 }
-async function deleteAllTodos(user_id) {
+async function deleteAll(user_id) {
     try {
         return todosDal.deleteAllTodos(user_id)
     } catch (error) {
@@ -46,10 +46,10 @@ async function deleteAllTodos(user_id) {
     }
 }
 module.exports = {
-    getAllTodos,
-    getTodoById,
-    addTodo,
-    updateTodo,
-    deleteTodo,
-    deleteAllTodos
+    getAll,
+    getById,
+    add,
+    update,
+    deleteById,
+    deleteAll
 };
