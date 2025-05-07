@@ -9,7 +9,7 @@ async function add(post){
 }
 async function getById(id){
     try {
-        return postsDAL.getContentPostById(post)
+        return postsDAL.getContentPostById(id)
     } catch (error) {
         throw new Error('get content post faild:'+ error);
     }
