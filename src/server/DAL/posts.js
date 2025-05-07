@@ -40,7 +40,7 @@ async function deletePost(id) {
 async function deleteAllPost(user_id) {
     const [result] = await db.query(
       `DELETE FROM myappdb.posts WHERE user_id = ?`,
-      [id]
+      [user_id]
     );
     return result.affectedRows > 0;
   }
