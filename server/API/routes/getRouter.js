@@ -44,7 +44,7 @@ router.get('/:table/:id', async (req, res) => {
   
     try {
        
-      const data = await controller.getById(id);
+      const data = await controller.getAll(id);
       res.json(data);
     } catch (err) {
       res.status(500).json({ error: 'Server error' });

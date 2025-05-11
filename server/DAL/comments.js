@@ -8,19 +8,16 @@ async function addComment(comment) {
     );
     return result.insertId;
 }
-async function getCommentById(id) {
+async function getCommentById(post_id) {
     const [rows] = await db.query(
-        `SELECT * FROM myappdb.comments WHERE id = ?`,
-        [id]
-    );
-    console.log(JSON.stringify(rows[0]));
-    return rows[0];
+        `SELECT * FROM myappdb.comments WHERE post_id=?`, [post_id]
+    );;
+    return rows;
 }
 async function getAllcomments(post_id) {
     const [rows] = await db.query(
         `SELECT * FROM myappdb.comments WHERE post_id=?`, [post_id]
     );
-    console.log(JSON.stringify(rows));
     return rows;
 }
 async function updateComment(id, comment) {
@@ -32,6 +29,7 @@ async function updateComment(id, comment) {
     return result.affectedRows > 0;
 }
 async function deleteComment(id) {
+    console.log("sdfghjk"+id);
     const [result] = await db.query(
         `DELETE FROM myappdb.comments WHERE id = ?`,
         [id]

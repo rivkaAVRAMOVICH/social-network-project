@@ -29,6 +29,7 @@ async function update(id, comment) {
     }
 }
 async function deleteById(id) {
+     console.log(id);
     try {
         return commentsDal.deleteComment(id);
     } catch (error) {

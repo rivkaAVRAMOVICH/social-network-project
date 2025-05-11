@@ -1,0 +1,14 @@
+.info-details p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.info-details a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.info-details a:hover {
+    text-decoration: underline;
+}

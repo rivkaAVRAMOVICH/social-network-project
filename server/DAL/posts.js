@@ -7,17 +7,17 @@ async function addPost(post) {
   );
   return result.insertId;
 }
-async function getContentPostById(id) {
-  const [rows] = await db.query(
-    `SELECT * FROM myappdb.posts WHERE id = ?`,
-    [id]
-  );
-  console.log(JSON.stringify(rows[0]));
-  return rows[0];
-}
+// async function getContentPostById(id) {
+//   const [rows] = await db.query(
+//     `SELECT * FROM myappdb.posts WHERE id = ?`,
+//     [id]
+//   );
+//   console.log(JSON.stringify(rows[0]));
+//   return rows[0];
+// }
 async function getAllPosts() {
   const [rows] = await db.query(
-    `SELECT id, user_id, title FROM myappdb.posts`
+    `SELECT * FROM myappdb.posts`
   );
   console.log(JSON.stringify(rows));
   return rows;
@@ -47,7 +47,7 @@ async function deleteAllPost(user_id) {
   
 module.exports = {
   addPost,
-  getContentPostById,
+  // getContentPostById,
   getAllPosts,
   updatePost,
   deletePost,

@@ -1,0 +1,73 @@
+import React, { useState, useContext } from 'react';
+import { FaEdit } from 'react-icons/fa';
+import { putRequest } from '../Requests'
+import { Error } from './App';
+function Edit(props) {
+    const { setErrorMessage } = useContext(Error);
+    const {
+        type,
+        id,
+        body,
+        setEditingId,
+        editingId,
+        arrayOfData,
+        setArrayOfData,
+        fields
+    } = props;
+    const [updateItem, setUpdateItem] = useState({
+        ...body,
+        ...fields.reduce((result, field) => ({ ...result, [field]: body?.[field] || '' }), {})
+    });
+    const handleSave = async () => {
+        for (const field of fields) {
+            if (!updateItem[field]?.trim()) {
+                setErrorMessage(`The field "${field}" cannot be empty.`);
+                return;
+            }
+        }
+        const requestResult = await putRequest(`${type}s/${id}`, updateItem);
+        if (requestResult.succeeded) {
+            setArrayOfData(arrayOfData.map((detailsItem) =>
+                detailsItem.id === id ? requestResult.data : detailsItem
+            ));
+            setEditingId(null)
+        } else {
+            setErrorMessage(requestResult.error);
+        }
+    };
+
+    return (
+        <>
+            {editingId === id ? (
+                <div className={`edit-container-${type}`}>
+                    {fields.map((field) => (
+                        <div key={field} className="input-container">
+                            <input
+                                className="edit-input"
+                                type='text'
+                                name={field}
+                                value={updateItem[field] || ''}
+                                onChange={(e) =>
+                                    setUpdateItem((prevState) => ({
+                                        ...prevState,
+                                        [field]: e.target.value,
+                                    }))
+                                }
+                            />
+                        </div>
+                    ))}
+                    <button onClick={handleSave}>Save</button>
+                    <button onClick={() => setEditingId(null)}>Cancel</button>
+                </div>
+            ) : (
+                <div className="view-container">
+                    <button onClick={() => setEditingId(id)}>
+                        <FaEdit size={20} color="#000" />
+                    </button>
+                </div>
+            )}
+        </>
+    );
+}
+
+export default Edit;

@@ -1,17 +1,18 @@
 const express = require('express');
 const app = express();
 const PORT = 3001;
+const cors=require('cors')
 
 const authenticateToken = require('./middleware');
 
-
+app.use(cors());
 const getRouter = require('./routes/getRouter');
 const postRouter = require('./routes/postRouter');
 const putRouter = require('./routes/putRouter');
 const deleteRouter = require('./routes/deleteRouter');
 const patchRouter = require('./routes/patchRouter');
-app.use(express.json());
 
+app.use(express.json());
 // 🛡️ הגנה על ראוטרים
 // app.use('/login', postRouter);
 // app.use('/register', postRouter);

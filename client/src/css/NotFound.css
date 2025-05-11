@@ -1,0 +1,51 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.robot-icon {
+    margin-bottom: 20px;
+    animation: bounce 1.5s infinite;
+}
+
+.not-found-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.not-found-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.home-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9d342;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #ffc107;
+    transform: scale(1.05);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}

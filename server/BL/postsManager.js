@@ -7,14 +7,14 @@ async function add(post){
         throw new Error('add post faild:'+ error);
     }
 }
-async function getById(id){
-    try {
-        console.log("vhhh")
-        return postsDAL.getContentPostById(id)
-    } catch (error) {
-        throw new Error('get content post faild:'+ error);
-    }
-}
+// async function getById(id){
+//     try {
+//         console.log("vhhh")
+//         return postsDAL.getContentPostById(id)
+//     } catch (error) {
+//         throw new Error('get content post faild:'+ error);
+//     }
+// }
 async function getAll(){
     try {
         return postsDAL.getAllPosts()
@@ -45,7 +45,7 @@ async function deleteAll(user_id){
 }
 module.exports = {
     add,
-    getById,
+    // getById,
     getAll,
     update,
     deleteById,
