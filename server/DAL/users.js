@@ -25,7 +25,6 @@ async function getUserByName(name) {
     `SELECT * FROM myappdb.users WHERE name = ?`,
     [name]
   );
-  console.log(JSON.stringify(rows[0]));
   return rows[0];
 }
 async function getUserById(id) {
@@ -33,7 +32,6 @@ async function getUserById(id) {
     `SELECT * FROM myappdb.users WHERE id = ?`,
     [id]
   );
-  console.log(JSON.stringify(rows[0]));
   return rows[0];
 }
 async function getUserPasswordById(id) {
@@ -41,7 +39,6 @@ async function getUserPasswordById(id) {
     `SELECT * FROM myappdb.passwords WHERE user_id = ?`,
     [id]
   );
-  console.log(JSON.stringify(rows[0]));
   return rows[0];
 }
 
@@ -49,7 +46,7 @@ async function getAllUsers() {
   const [rows] = await db.query(
     `SELECT * FROM myappdb.users`
   );
-  console.log(JSON.stringify(rows));
+
   return rows;
 }
 

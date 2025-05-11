@@ -29,8 +29,6 @@ export async function getRequest(currentUrl) {
 }
 export async function postRequest(currentUrl, body) {
     try {
-        console.log(body);
-        console.log(currentUrl)
         const token = localStorage.getItem('token');
         const response = await fetch(`http://localhost:3001/${currentUrl}`, {
             method: 'POST',
@@ -81,13 +79,15 @@ export async function putRequest(currentUrl, body) {
 }
 export async function deleteRequest(currentUrl) {
     try {
+        const token = localStorage.getItem('token');
         const response = await fetch(`http://localhost:3001/${currentUrl}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 ...(token && { 'Authorization': `Bearer ${token}` }) // רק אם קיים טוקן
             }
-        });
+        } );
+        console.log(currentUrl);
         if (response.ok) {
             requestResult.succeeded=true;
         } else {
@@ -97,6 +97,7 @@ export async function deleteRequest(currentUrl) {
     } catch (err) {
         requestResult.error = 'Something went wrong. Please try again.';
         requestResult.succeeded=false;
+        console.log("cfghjhcgxvbjhknbhvbjnk");
     }
     return requestResult
 }

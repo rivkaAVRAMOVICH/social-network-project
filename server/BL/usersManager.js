@@ -10,7 +10,6 @@ const usersDAL = require('../DAL/users');
 //     }
 // }
 async function update(user_id, userUpdates) {
-    console.log(user_id);
     const existingUser = await usersDAL.getUserById(user_id);
     if (!existingUser) {
       throw new Error('User not found');

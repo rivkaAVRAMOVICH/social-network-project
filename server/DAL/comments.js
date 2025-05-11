@@ -11,7 +11,7 @@ async function addComment(comment) {
 async function getCommentById(post_id) {
     const [rows] = await db.query(
         `SELECT * FROM myappdb.comments WHERE post_id=?`, [post_id]
-    );;
+    );
     return rows;
 }
 async function getAllcomments(post_id) {
@@ -29,7 +29,6 @@ async function updateComment(id, comment) {
     return result.affectedRows > 0;
 }
 async function deleteComment(id) {
-    console.log("sdfghjk"+id);
     const [result] = await db.query(
         `DELETE FROM myappdb.comments WHERE id = ?`,
         [id]

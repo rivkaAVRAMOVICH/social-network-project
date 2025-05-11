@@ -16,7 +16,7 @@ router.post('/login', async (req, res) => {
 });
 router.post('/register', async (req, res) => {
   try {
-    console.log("req"+JSON.stringify(req.body))
+
     const controller = require(`../../BL/AccessControlManager.js`);;
     if (!controller || !controller.register) {
       return res.status(404).json({ error: 'Entity not found' });
@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
 });
 // מסלול GET שמחזיר רשימת משתמשים
 router.post('/:table', async (req, res) => {
-  console.log(JSON.stringify(req.body))
+
   const { table } = req.params;
   const controller = require(`../../BL/${table}Manager.js`);
 

@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const usersDAL = require('../DAL/users');
 const bcrypt = require('bcrypt');
-const { loadEnvFile } = require('process');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
 const secret = process.env.TOKEN_SECRET;
 
@@ -13,10 +12,10 @@ async function login(myuser) {
     if (!user) throw new Error('User not found');
     const userPassword = await usersDAL.getUserPasswordById(user.id);
     const match = await bcrypt.compare(password, userPassword.password_hash);
-    console.log('match?', match); // צריך להחזיר true
+  
     if (!match) throw new Error('Invalid password');
  
- console.log(JSON.stringify(user))
+ 
   const token = jwt.sign({ id: user.id, email: user.email }, secret, {
     expiresIn: '48h'
   });
