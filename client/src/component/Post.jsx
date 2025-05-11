@@ -78,7 +78,7 @@ const Post = (props) => {
                                                         id={comment.id}
                                                         arrayOfData={comments}
                                                         setArrayOfData={setComments}
-                                                        types={['comment']}
+                                                        type={['comment']}
                                                     />
                                                 </>}
                                             </>)}

@@ -8,10 +8,10 @@ function authenticateToken(req, res, next) {
     return next();
   }
   const authHeader = req.headers['authorization'];
-  console.log(authHeader);
-  
+
+
   const token = authHeader && authHeader.split(' ')[1];
-console.log("TOKEN", token );
+
   if (!token) return res.status(401).json({ message: 'אין טוקן' });
 
   jwt.verify(token, secret, (err, user) => {

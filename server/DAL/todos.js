@@ -2,7 +2,6 @@ const db = require('../../db/connection');
 
 async function getAllTodos(user_id) {
   const [rows] = await db.query('SELECT * FROM myappdb.todos WHERE user_id = ?', [user_id]);
-  console.log(JSON.stringify(rows))
   return rows;
 }
 async function getTodoById(id) {
@@ -24,7 +23,7 @@ async function updateTodo(id, todo) {
     `UPDATE myappdb.todos SET title = ?, completed = ? WHERE id = ?`,
     [title, completed, id]
   );
-  console.log(JSON.stringify(result));
+
 
   return result.affectedRows > 0;
 }

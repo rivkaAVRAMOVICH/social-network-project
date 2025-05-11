@@ -26,7 +26,6 @@ router.get('/:table/:id', async (req, res) => {
     }
   
     try {
-        console.log(id);
       const data = await controller.getById(id);
       res.json(data);
     } catch (err) {

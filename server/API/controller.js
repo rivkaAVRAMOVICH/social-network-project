@@ -13,9 +13,6 @@ const deleteRouter = require('./routes/deleteRouter');
 const patchRouter = require('./routes/patchRouter');
 
 app.use(express.json());
-// 🛡️ הגנה על ראוטרים
-// app.use('/login', postRouter);
-// app.use('/register', postRouter);
 app.use(authenticateToken);
 app.use('/', postRouter); 
 app.use('/', getRouter);

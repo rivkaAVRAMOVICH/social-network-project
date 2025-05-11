@@ -19,7 +19,6 @@ async function getAllPosts() {
   const [rows] = await db.query(
     `SELECT * FROM myappdb.posts`
   );
-  console.log(JSON.stringify(rows));
   return rows;
 }
 async function updatePost(id, post) {
@@ -47,15 +46,9 @@ async function deleteAllPost(user_id) {
   
 module.exports = {
   addPost,
-  // getContentPostById,
   getAllPosts,
   updatePost,
   deletePost,
   deleteAllPost
 };
-// var post={
-//     user_id: 123,
-//     title:"rcev555",
-//     content:"cdfhjjvghmghhngfxdcgvhbj555"
-// }
-// addPost(post);
+
