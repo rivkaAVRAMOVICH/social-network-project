@@ -1,8 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom"
 import { CurrentUser, Error } from './App';
-import { postRequest } from '../Requests';
+import { postRequest, setRefreshTokenInCookies } from '../Requests';
 import '../css/Login.css';
+
+
 function RegistrationPermission() {
     const { setCurrentUser } = useContext(CurrentUser);
     const { setErrorMessage } = useContext(Error);
@@ -15,6 +17,7 @@ function RegistrationPermission() {
         password: "",
     });
 
+
     // const checkUserNameExists = async () => {
     //     const requestResult = await getRequest(`users?username=${registrationData.userName}`)
     //     if (requestResult.succeeded) {
@@ -24,12 +27,13 @@ function RegistrationPermission() {
     // };
     const submitFullForm = async () => {
         console.log(formData);
-        const requestResult = await postRequest(`register`,formData)
+        const requestResult = await postRequest(`register`, formData)
         if (requestResult.succeeded) {
             const { name, email, address, phone } = formData;
-            localStorage.setItem("currentUser", JSON.stringify({ name, email, address, phone , id:requestResult.data.userId}));
-            setCurrentUser({ name, email, address, phone,id:requestResult.data.userId });
-            localStorage.setItem("token",requestResult.data.token);
+            localStorage.setItem("currentUser", JSON.stringify({ name, email, address, phone, id: requestResult.data.userId }));
+            setCurrentUser({ name, email, address, phone, id: requestResult.data.userId });
+            localStorage.setItem("token", requestResult.data.accessToken);
+            setRefreshTokenInCookies(requestResult.data.refreshToken);
             navigate(`/users/${requestResult.data.userId}/home`);
         } else {
             setErrorMessage(requestResult.error)
@@ -43,24 +47,24 @@ function RegistrationPermission() {
     };
     return (
         <>
-                <div className="login-container">
-                    <h2>Registration</h2>
-                     <form className="form-container" onSubmit={handleFullFormSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                required
-                                type="password"
-                                id="password"
-                                placeholder="Enter your password"
-                                value={formData.password}
-                                onChange={(e) => setFormData((prev) => ({
-                                    ...prev,
-                                    password: e.target.value
-                                }))}
-                            />
-                        </div>
-                          <div className="form-group">
+            <div className="login-container">
+                <h2>Registration</h2>
+                <form className="form-container" onSubmit={handleFullFormSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            required
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            value={formData.password}
+                            onChange={(e) => setFormData((prev) => ({
+                                ...prev,
+                                password: e.target.value
+                            }))}
+                        />
+                    </div>
+                    <div className="form-group">
                         <label className="form-label">Name:</label>
                         <input
                             required
@@ -102,12 +106,12 @@ function RegistrationPermission() {
                             className="form-input"
                             value={formData.phone}
                             onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
-                  />
-                   </div>
+                        />
+                    </div>
                     <button className="form-button" type="submit">Submit</button>
-                    </form>
-                    <Link to="/login">Login</Link>
-                </div>
+                </form>
+                <Link to="/login">Login</Link>
+            </div>
 
         </>
     );

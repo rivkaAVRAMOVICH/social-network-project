@@ -2,7 +2,19 @@ const jwt = require('jsonwebtoken');
 const dal = require('../DAL/dal');
 const bcrypt = require('bcrypt');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
-const secret = process.env.TOKEN_SECRET;
+const accessSecret = process.env.TOKEN_SECRET;
+const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
+
+
+
+function generateAccessToken(user) {
+  return jwt.sign({ id: user.id, email: user.email }, accessSecret, { expiresIn: '50m' });
+}
+
+function generateRefreshToken(user) {
+  return jwt.sign({ id: user.id, email: user.email }, refreshSecret, { expiresIn: '7d' });
+}
+
 
 async function login(myuser) {
   const { name, password } = myuser;
@@ -12,19 +24,17 @@ async function login(myuser) {
     if (!user) throw new Error('User not found');
     const userPassword = await dal.getByField("passwords",user.id,"user_id");
     const match = await bcrypt.compare(password, userPassword.password_hash);
-  
     if (!match) throw new Error('Invalid password');
- 
- 
-  const token = jwt.sign({ id: user.id, email: user.email }, secret, {
-    expiresIn: '48h'
-  });
-    return { user, token };
+
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    return { user, accessToken, refreshToken };
   } catch (error) {
     console.error('Password comparison error:', error.message);
   }
-
 }
+
 async function register({ name, email, password, address, phone }) {
   const existingUser = await dal.getByField("users", name, "name");
   if (existingUser) throw new Error('User already exists');
@@ -44,11 +54,11 @@ if(!userId){
     console.error("error", error.message);
   }
   
+  const user = { id: userId, email };
 
-  const token = jwt.sign({ id: userId, email: email }, secret, {
-    expiresIn: '48h',
-  });
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
 
-  return { userId, token };
+  return { userId, accessToken, refreshToken };
 }
 module.exports = { login, register };
