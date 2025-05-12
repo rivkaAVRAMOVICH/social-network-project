@@ -9,7 +9,6 @@ function Add(props) {
         ...permanentInformation,
         ...arrayOfInputType.reduce((result, field) => ({ ...result, [field]: permanentInformation?.[field] || '' }), {})
     });
-
     const handleAddItem = async () => {
         for (const field of arrayOfInputType) {
             if (!newItem[field].trim()) {
@@ -24,6 +23,7 @@ function Add(props) {
                 ...permanentInformation,
                 ...arrayOfInputType.reduce((result, field) => ({ ...result, [field]: '' }), {}) 
             });
+            console.log(requestResult.data );
         } else {
             setErrorMessage(requestResult.error);
         }

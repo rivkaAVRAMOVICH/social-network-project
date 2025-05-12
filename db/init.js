@@ -80,7 +80,6 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') }
 // const connection = require('./connection');
 async function initDB() {
   try {
-    console.log(process.env.DB_NAME);
     await connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
     await connection.query(`USE ${process.env.DB_NAME}`);
     await connection.query(`CREATE TABLE IF NOT EXISTS users (
@@ -88,7 +87,8 @@ async function initDB() {
       name VARCHAR(100) UNIQUE,
       email VARCHAR(100) UNIQUE,
       address VARCHAR(100),
-      phone VARCHAR(20)
+      phone VARCHAR(20),
+      isDeleted BOOLEAN DEFAULT FALSE
     );`);
 
     await connection.query(`CREATE TABLE IF NOT EXISTS posts (
@@ -97,6 +97,7 @@ async function initDB() {
       title VARCHAR(200),
       content TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      isDeleted BOOLEAN DEFAULT FALSE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );`);
 
@@ -106,6 +107,7 @@ async function initDB() {
       title VARCHAR(200),
       completed BOOLEAN DEFAULT FALSE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      isDeleted BOOLEAN DEFAULT FALSE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );`);
 
@@ -115,6 +117,7 @@ async function initDB() {
       user_id INT,
       content TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      isDeleted BOOLEAN DEFAULT FALSE,
       FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );`);
@@ -123,6 +126,7 @@ async function initDB() {
       user_id INT PRIMARY KEY,
       password_hash VARCHAR(255) NOT NULL,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      isDeleted BOOLEAN DEFAULT FALSE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );`);
 

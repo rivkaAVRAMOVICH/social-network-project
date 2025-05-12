@@ -23,16 +23,14 @@ function Todos() {
         }
     };
 
-    const handleToggleComplete = async (id, completed, titel) => {
+    const handleToggleComplete = async (id, completed) => {
         const body = {
-            user_id: currentUser.id,
             id: id,
-            title: titel,
             completed: completed
         };
         const requestResult = await patchRequest(`todos/${id}`, body);
         if (requestResult.succeeded) {
-            setTodos(todos.map((todo) => (todo.id === id ? body : todo)));
+            setTodos(todos.map((todo) => (todo.id === id ? { ...todo, ...body} : todo)));
             setFilteredTodos(filteredTodos.map((todo) => (todo.id === id ? body : todo)));
         } else {
             setErrorMessage(requestResult.error)

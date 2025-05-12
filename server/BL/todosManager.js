@@ -1,15 +1,15 @@
-const todosDal = require('../DAL/todos');
+const dal = require('../DAL/dal');
 
 async function getAll(user_id) {
     try {
-        return todosDal.getAllTodos(user_id);
+        return dal.getAll("todos",{user_id:user_id});
     } catch (error) {
         throw new Error("get all todos faild:" + error);
     }
 }
 async function getById(id) {
     try {
-        return todosDal.getTodoById(id);
+        return dal.getByField("todos",id);
     } catch (error) {
         throw new Error("get todo faild:" + error);
 
@@ -18,7 +18,7 @@ async function getById(id) {
 }
 async function add(todo) {
     try {
-        return todosDal.addTodo(todo)
+        return dal.insert("todos",todo)
     } catch (error) {
         throw new Error("add todo faild:" + error);
 
@@ -26,24 +26,31 @@ async function add(todo) {
 }
 async function update(id, todo) {
     try {
-        return todosDal.updateTodo(id, todo)
+        return dal.updateById("todos",id, todo)
     } catch (error) {
         throw new Error("update todo faild:" + error);
     }
 }
 async function deleteById(id) {
     try {
-        return todosDal.deleteTodo(id)
+        return dal.softDeleteById("todos",id)
     } catch (error) {
         throw new Error("deleta todo faild:" + error);
     }
 }
 async function deleteAll(user_id) {
     try {
-        return todosDal.deleteAllTodos(user_id)
+        return dal.softDeleteAll("todos",{user_id:user_id})
     } catch (error) {
         throw new Error("delete all todos faild:" + error);
     }
+}
+async function merge(id, updateData) {
+const existingItem = await dal.getByField("todos",id);
+if (!existingItem) throw new Error('Entity not found');
+const mergedItem = { ...existingItem, ...updateData };
+const updated = await dal.updateById("todos",id, mergedItem);
+return updated;
 }
 module.exports = {
     getAll,
@@ -51,5 +58,6 @@ module.exports = {
     add,
     update,
     deleteById,
-    deleteAll
+    deleteAll,
+    merge
 };

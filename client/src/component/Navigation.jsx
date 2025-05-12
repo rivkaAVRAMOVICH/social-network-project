@@ -32,7 +32,6 @@ function Navigation() {
                     <nav className="navigation-bar">
                         <div className="nav-links">
                             <Link to={`/users/${currentUser.id}/home`} className="nav-link">Home</Link>
-                            <Link to={`/users/${currentUser.id}/albums`} className="nav-link">Albums</Link>
                             <Link to={`/users/${currentUser.id}/posts`} className="nav-link">Posts</Link>
                             <Link to={`/users/${currentUser.id}/todos`} className="nav-link">Todos</Link>
                             <button className="info-btn" onClick={showInfo}>Info</button>

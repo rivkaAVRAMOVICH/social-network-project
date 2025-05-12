@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import { putRequest } from '../Requests'
+import { putRequest,patchRequest } from '../Requests'
 import { Error } from './App';
 function Edit(props) {
     const { setErrorMessage } = useContext(Error);
@@ -35,7 +35,7 @@ function Edit(props) {
 
   if (requestResult.succeeded) {
     setArrayOfData(arrayOfData.map((detailsItem) =>
-      detailsItem.id === id ? updateItem : detailsItem
+      detailsItem.id === id ? { ...detailsItem, ...updateItem } : detailsItem
     ));
     setEditingId(null);
   } else {
