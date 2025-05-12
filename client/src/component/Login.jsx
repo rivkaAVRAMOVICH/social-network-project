@@ -1,14 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom"
 import { CurrentUser, Error } from './App';
-import { postRequest } from '../Requests';
+import { postRequest, setRefreshTokenInCookies } from '../Requests';
 import '../css/Login.css';
 
-function setRefreshTokenInCookies(refreshToken) {
-    const expires = new Date();
-    expires.setFullYear(expires.getFullYear() + 1); 
-    document.cookie = `refreshToken=${refreshToken}; expires=${expires.toUTCString()}; path=/; Secure; HttpOnly`;
-}
 
 function Login() {
     const [userData, setUserData] = useState({ name: '', password: '' });
@@ -22,15 +17,16 @@ function Login() {
     }, [currentUser])
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const requestResult = await postRequest(`login`,userData)
+        const requestResult = await postRequest(`login`, userData)
         if (requestResult.succeeded) {
             console.log(requestResult.data);
-                 localStorage.setItem("currentUser", JSON.stringify({ name:requestResult.data.user.name, email:requestResult.data.user.email, address:requestResult.data.user.address, phone:requestResult.data.user.phone , id:requestResult.data.user.id}));
-            setCurrentUser({name:requestResult.data.user.name, email:requestResult.data.user.email, address:requestResult.data.user.address, phone:requestResult.data.user.phone , id:requestResult.data.user.id});
-            localStorage.setItem("token", requestResult.data.token);
+            localStorage.setItem("currentUser", JSON.stringify({ name: requestResult.data.user.name, email: requestResult.data.user.email, address: requestResult.data.user.address, phone: requestResult.data.user.phone, id: requestResult.data.user.id }));
+            setCurrentUser({ name: requestResult.data.user.name, email: requestResult.data.user.email, address: requestResult.data.user.address, phone: requestResult.data.user.phone, id: requestResult.data.user.id });
+            localStorage.setItem("token", requestResult.data.accessToken);
+            console.log(requestResult.data.accessToken);
             setRefreshTokenInCookies(requestResult.data.refreshToken);
             navigate(`/users/${requestResult.data.userId}/home`);
-        }else {
+        } else {
             setErrorMessage(requestResult.error)
         }
     };

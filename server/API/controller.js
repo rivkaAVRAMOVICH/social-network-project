@@ -5,7 +5,11 @@ const cors=require('cors')
 
 const authenticateToken = require('./middleware');
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',  // הדומיין שמהם ניתן לבצע בקשות
+  credentials: true  // מאפשר לשלוח ולקבל עוגיות
+}));
+
 const getRouter = require('./routes/getRouter');
 const postRouter = require('./routes/postRouter');
 const putRouter = require('./routes/putRouter');

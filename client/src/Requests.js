@@ -146,7 +146,8 @@ function removeCookie(name) {
 function setRefreshTokenInCookies(refreshToken) {
     const expires = new Date();
     expires.setFullYear(expires.getFullYear() + 1); // שמירה לשנה
-    document.cookie = `refreshToken=${refreshToken}; expires=${expires.toUTCString()}; path=/; Secure; HttpOnly`;
+    document.cookie = `refreshToken=${refreshToken}; expires=${expires.toUTCString()}; path=/; Secure`; // הסר HttpOnly
+
 }
 
 // פונקציה לרענן את הטוקן במקרה של שגיאה 401 או 403
@@ -237,3 +238,4 @@ export async function patchRequest(url, body) {
 export async function deleteRequest(url) {
     return await sendRequestWithRefresh('DELETE', url);
 }
+export { setRefreshTokenInCookies };

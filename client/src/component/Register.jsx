@@ -1,14 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from "react-router-dom"
 import { CurrentUser, Error } from './App';
-import { postRequest } from '../Requests';
+import { postRequest, setRefreshTokenInCookies } from '../Requests';
 import '../css/Login.css';
-
-function setRefreshTokenInCookies(refreshToken) {
-    const expires = new Date();
-    expires.setFullYear(expires.getFullYear() + 1); // שמירה לשנה
-    document.cookie = `refreshToken=${refreshToken}; expires=${expires.toUTCString()}; path=/; Secure; HttpOnly`;
-}
 
 
 function RegistrationPermission() {
@@ -38,7 +32,7 @@ function RegistrationPermission() {
             const { name, email, address, phone } = formData;
             localStorage.setItem("currentUser", JSON.stringify({ name, email, address, phone, id: requestResult.data.userId }));
             setCurrentUser({ name, email, address, phone, id: requestResult.data.userId });
-            localStorage.setItem("token", requestResult.data.token);
+            localStorage.setItem("token", requestResult.data.accessToken);
             setRefreshTokenInCookies(requestResult.data.refreshToken);
             navigate(`/users/${requestResult.data.userId}/home`);
         } else {
