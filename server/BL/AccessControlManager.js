@@ -2,7 +2,19 @@ const jwt = require('jsonwebtoken');
 const usersDAL = require('../DAL/users');
 const bcrypt = require('bcrypt');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
-const secret = process.env.TOKEN_SECRET;
+const accessSecret = process.env.TOKEN_SECRET;
+const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
+
+
+
+function generateAccessToken(user) {
+  return jwt.sign({ id: user.id, email: user.email }, accessSecret, { expiresIn: '15m' });
+}
+
+function generateRefreshToken(user) {
+  return jwt.sign({ id: user.id, email: user.email }, refreshSecret, { expiresIn: '7d' });
+}
+
 
 async function login(myuser) {
   const { name, password } = myuser;
@@ -10,28 +22,27 @@ async function login(myuser) {
   try {
     const user = await usersDAL.getUserByName(name);
     if (!user) throw new Error('User not found');
+
     const userPassword = await usersDAL.getUserPasswordById(user.id);
     const match = await bcrypt.compare(password, userPassword.password_hash);
-  
     if (!match) throw new Error('Invalid password');
- 
- 
-  const token = jwt.sign({ id: user.id, email: user.email }, secret, {
-    expiresIn: '48h'
-  });
-    return { user, token };
-  } catch (error) {
-    console.error('❌ שגיאה בהשוואת סיסמה:', error.message);
-  }
 
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    return { user, accessToken, refreshToken };
+  } catch (error) {
+    console.error('❌ שגיאה בהתחברות:', error.message);
+    throw error;
+  }
 }
+
 async function register({ name, email, password, address, phone }) {
-  // בדוק אם המשתמש כבר קיים
   const existingUser = await usersDAL.getUserByName(name);
   if (existingUser) throw new Error('User already exists');
-  // הצפן את הסיסמה עם salt rounds = 10
+
   const HashedPassword = await bcrypt.hash(password, 10);
-  // צור את המשתמש במסד הנתונים
+
   const userId = await usersDAL.addUser({
     HashedPassword,
     name,
@@ -40,11 +51,11 @@ async function register({ name, email, password, address, phone }) {
     phone,
   });
 
-  // צור טוקן לאחר הרשמה
-  const token = jwt.sign({ id: userId, email: email }, secret, {
-    expiresIn: '48h',
-  });
+  const user = { id: userId, email };
 
-  return { userId, token };
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+
+  return { userId, accessToken, refreshToken };
 }
 module.exports = { login, register };

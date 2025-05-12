@@ -3,6 +3,13 @@ import { useNavigate, Link } from "react-router-dom"
 import { CurrentUser, Error } from './App';
 import { postRequest } from '../Requests';
 import '../css/Login.css';
+
+function setRefreshTokenInCookies(refreshToken) {
+    const expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1); 
+    document.cookie = `refreshToken=${refreshToken}; expires=${expires.toUTCString()}; path=/; Secure; HttpOnly`;
+}
+
 function Login() {
     const [userData, setUserData] = useState({ name: '', password: '' });
     const { currentUser, setCurrentUser } = useContext(CurrentUser);
@@ -21,6 +28,7 @@ function Login() {
                  localStorage.setItem("currentUser", JSON.stringify({ name:requestResult.data.user.name, email:requestResult.data.user.email, address:requestResult.data.user.address, phone:requestResult.data.user.phone , id:requestResult.data.user.id}));
             setCurrentUser({name:requestResult.data.user.name, email:requestResult.data.user.email, address:requestResult.data.user.address, phone:requestResult.data.user.phone , id:requestResult.data.user.id});
             localStorage.setItem("token", requestResult.data.token);
+            setRefreshTokenInCookies(requestResult.data.refreshToken);
             navigate(`/users/${requestResult.data.userId}/home`);
         }else {
             setErrorMessage(requestResult.error)

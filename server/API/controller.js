@@ -11,8 +11,11 @@ const postRouter = require('./routes/postRouter');
 const putRouter = require('./routes/putRouter');
 const deleteRouter = require('./routes/deleteRouter');
 const patchRouter = require('./routes/patchRouter');
+const authRouter = require('./routes/authRouter');
+
 
 app.use(express.json());
+app.use('/', authRouter);
 app.use(authenticateToken);
 app.use('/', postRouter); 
 app.use('/', getRouter);
