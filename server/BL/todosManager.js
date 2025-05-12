@@ -2,7 +2,7 @@ const todosDal = require('../DAL/todos');
 
 async function getAll(user_id) {
     try {
-        return todosDal.deleteAllTodos(user_id);
+        return todosDal.getAllTodos(user_id);
     } catch (error) {
         throw new Error("get all todos faild:" + error);
     }

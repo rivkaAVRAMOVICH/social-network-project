@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { CurrentUser, Error } from './App';
-import { getRequest, putRequest } from '../Requests'
+import { getRequest, patchRequest } from '../Requests'
 import Delete from "./Delete";
 import Add from "./Add";
 import Edit from "./Edit";
@@ -14,7 +14,7 @@ function Todos() {
     const [sortCriteria, setSortCriteria] = useState('id');
     const [editingTodoId, setEditingTodoId] = useState(null);
     const getAllTodos = async () => {
-        const requestResult = await getRequest(`users${currentUser.id}/todos`)
+        const requestResult = await getRequest(`users/${currentUser.id}/todos`)
         if (requestResult.succeeded) {
             setTodos(requestResult.data);
             setFilteredTodos(requestResult.data);
@@ -25,15 +25,15 @@ function Todos() {
 
     const handleToggleComplete = async (id, completed, titel) => {
         const body = {
-            userId: currentUser.id,
+            user_id: currentUser.id,
             id: id,
             title: titel,
             completed: completed
         };
-        const requestResult = await putRequest(`todos/${id}`, body);
+        const requestResult = await patchRequest(`todos/${id}`, body);
         if (requestResult.succeeded) {
-            setTodos(todos.map((todo) => (todo.id === id ? requestResult.data : todo)));
-            setFilteredTodos(filteredTodos.map((todo) => (todo.id === id ? requestResult.data : todo)));
+            setTodos(todos.map((todo) => (todo.id === id ? body : todo)));
+            setFilteredTodos(filteredTodos.map((todo) => (todo.id === id ? body : todo)));
         } else {
             setErrorMessage(requestResult.error)
         }
@@ -87,7 +87,7 @@ function Todos() {
                 <div className='add-sort-container'>
                     <Add
                         permanentInformation={{
-                            userId: currentUser?.id,
+                            user_id: currentUser?.id,
                             completed: false
                         }}
                         arrayOfData={todos}
@@ -114,16 +114,18 @@ function Todos() {
                             <input
                                 type="checkbox"
                                 checked={todo.completed}
-                                onChange={() => handleToggleComplete(todo.id, !todo.completed, todo.title)}
+                                onChange={() => handleToggleComplete(todo.id, !todo.completed,
+                                )}
                             />
                             <span className="todo-id">#{todo.id}</span>
                             {editingTodoId !== todo.id &&
                                 (<><span className="todo-title">{todo.title}</span>
                                     <Delete
                                         id={todo.id}
+                                        type='todo'
                                         arrayOfData={todos}
                                         setArrayOfData={setTodos}
-                                        types={['todo']}
+                                       
                                     />
                                 </>)}
                             <Edit
@@ -131,8 +133,8 @@ function Todos() {
                                 id={todo.id}
                                 body={{
                                     title: todo.title,
-                                    userId: currentUser?.id,
-                                    id: editingTodoId,
+                                    user_id: currentUser?.id,
+                                    id: todo.id,
                                     completed: todo.completed
                                 }}
                                 editingId={editingTodoId}
@@ -147,5 +149,4 @@ function Todos() {
         </div>
     );
 }
-
 export default Todos;

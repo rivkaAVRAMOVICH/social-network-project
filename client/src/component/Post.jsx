@@ -16,6 +16,7 @@ const Post = (props) => {
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editingPostId, setEditingPostId] = useState(null);
     const getAllComments = async (id) => {
+        console.log(post)
         const requestResult = await getRequest(`posts/${id}/comments`);
         if (requestResult.succeeded) {
             setComments(requestResult.data);
@@ -54,7 +55,7 @@ const Post = (props) => {
                             id={post.id}
                             body={{
                                 user_id: currentUser.id,
-                                id: editingPostId,
+                                id: post.id,
                                 title: post.title,
                                 content: post.content
                             }}
@@ -62,7 +63,7 @@ const Post = (props) => {
                             setEditingId={setEditingPostId}
                             arrayOfData={posts}
                             setArrayOfData={setPosts}
-                            fields={['body']} />}
+                            fields={['content']} />}
                         {shownComments[post.id] && (
                             <>
                                 <div className="comments-list">
@@ -78,7 +79,7 @@ const Post = (props) => {
                                                         id={comment.id}
                                                         arrayOfData={comments}
                                                         setArrayOfData={setComments}
-                                                        type={['comment']}
+                                                        type='comment'
                                                     />
                                                 </>}
                                             </>)}
@@ -87,8 +88,9 @@ const Post = (props) => {
                                                     type={'comment'}
                                                     id={comment.id}
                                                     body={{
-                                                        postId: post.id,
-                                                        id: editingCommentId,
+                                                        post_id: post.id,
+                                                        user_id:currentUser.id,
+                                                        id: comment.id,
                                                         content: comment.content
                                                     }}
                                                     editingId={editingCommentId}

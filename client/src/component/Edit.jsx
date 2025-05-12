@@ -18,24 +18,30 @@ function Edit(props) {
         ...body,
         ...fields.reduce((result, field) => ({ ...result, [field]: body?.[field] || '' }), {})
     });
-    const handleSave = async () => {
-        for (const field of fields) {
-            if (!updateItem[field]?.trim()) {
-                setErrorMessage(`The field "${field}" cannot be empty.`);
-                return;
-            }
-        }
-        const requestResult = await putRequest(`${type}s/${id}`, updateItem);
-        if (requestResult.succeeded) {
-            setArrayOfData(arrayOfData.map((detailsItem) =>
-                detailsItem.id === id ? requestResult.data : detailsItem
-            ));
-            setEditingId(null)
-        } else {
-            setErrorMessage(requestResult.error);
-        }
-    };
+   const handleSave = async () => {
+  let missingFields = false;
 
+  for (const field of fields) {
+    if (!updateItem[field]?.trim()) {
+      missingFields = true;
+      break;
+    }
+  }
+  const method = missingFields ? 'PATCH' : 'PUT';
+
+  const requestFunction = method === 'PATCH' ? patchRequest : putRequest;
+
+  const requestResult = await requestFunction(`${type}s/${id}`, updateItem);
+
+  if (requestResult.succeeded) {
+    setArrayOfData(arrayOfData.map((detailsItem) =>
+      detailsItem.id === id ? updateItem : detailsItem
+    ));
+    setEditingId(null);
+  } else {
+    setErrorMessage(requestResult.error);
+  }
+};
     return (
         <>
             {editingId === id ? (

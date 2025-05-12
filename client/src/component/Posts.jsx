@@ -102,7 +102,7 @@ function Posts() {
                                     id={post.id} 
                                     arrayOfData={posts} 
                                     setArrayOfData={setPosts} 
-                                    types={['post', 'comment']} 
+                                    type='post'
                                     />}
                                 </div>
                             </li>

@@ -17,10 +17,9 @@ function Add(props) {
                 return;
             }
         }
-        console.log(newItem);
         const requestResult = await postRequest(`${type}s`, newItem);
         if (requestResult.succeeded) {
-            setArrayOfData([...arrayOfData, requestResult.data]);
+            setArrayOfData([...arrayOfData, { ...newItem, id: requestResult.data }]);
             setNewItem({
                 ...permanentInformation,
                 ...arrayOfInputType.reduce((result, field) => ({ ...result, [field]: '' }), {}) 

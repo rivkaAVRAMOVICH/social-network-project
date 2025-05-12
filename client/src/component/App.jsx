@@ -7,8 +7,6 @@ import Register from './Register'
 import NotFound from './NotFound'
 import Posts from './Posts'
 import Post from './Post'
-import Albums from './Albums'
-import Album from './Album'
 import Navigation from './Navigation'
 import { useEffect, createContext } from 'react';
 import '../css/App.css'
@@ -45,8 +43,6 @@ function App() {
           <Route path=':postId' element={<Post/>}/>
           <Route path=':postId/comments' element={<Post/>}/>
           </Route>
-          <Route path='albums' element={<Albums />} />
-          <Route path='albums/:albumId/photos' element={<Album />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
